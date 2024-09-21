@@ -1,0 +1,296 @@
+<html><head><base href="https://campusconnect.edu/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Your All-in-One College Life Companion</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            text-align: center;
+            color: #7f5af0;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(127, 90, 240, 0.5);
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            justify-content: center;
+        }
+        .feature-button {
+            background: rgba(127, 90, 240, 0.2);
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .feature-button:hover {
+            background: rgba(127, 90, 240, 0.4);
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .feature-description {
+            font-size: 0.9rem;
+            color: #d1d1e9;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #2a2a4a, #26335e);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .explore-more {
+            display: block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #7f5af0;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .explore-more:hover {
+            background-color: #6b46c1;
+        }
+        #featureContent {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CampusConnect</h1>
+        <div class="button-grid">
+            <button class="feature-button" onclick="openModal('calendar')">
+                <span class="feature-icon">📅</span>
+                <span class="feature-name">Calendar & Tasks</span>
+                <span class="feature-description">Manage schedules and plan events</span>
+            </button>
+            <button class="feature-button" onclick="openModal('academics')">
+                <span class="feature-icon">📚</span>
+                <span class="feature-name">Academic Life</span>
+                <span class="feature-description">Access materials and track progress</span>
+            </button>
+            <button class="feature-button" onclick="openModal('clubs')">
+                <span class="feature-icon">🎭</span>
+                <span class="feature-name">Clubs & Societies</span>
+                <span class="feature-description">Discover and join interest groups</span>
+            </button>
+            <button class="feature-button" onclick="openModal('mentorship')">
+                <span class="feature-icon">🤝</span>
+                <span class="feature-name">Guidance & Mentorship</span>
+                <span class="feature-description">Connect with professors and seniors</span>
+            </button>
+            <button class="feature-button" onclick="openModal('mentalhealth')">
+                <span class="feature-icon">🧘</span>
+                <span class="feature-name">Mental Healthcare</span>
+                <span class="feature-description">Manage stress and set goals</span>
+            </button>
+            <button class="feature-button" onclick="openModal('chatbot')">
+                <span class="feature-icon">🤖</span>
+                <span class="feature-name">CampusBot</span>
+                <span class="feature-description">Get personalized assistance</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="featureModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+            <button onclick="exploreMore()" class="explore-more">Explore More</button>
+            <div id="featureContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const featureDetails = {
+            calendar: {
+                title: "Calendar & Tasks",
+                description: "Stay organized with our comprehensive calendar and task management system. Track your class schedules, assignment deadlines, and campus events all in one place. Set reminders, create to-do lists, and never miss an important date again!",
+                content: `
+                    <h3>Key Features:</h3>
+                    <ul>
+                        <li>Integrated class schedule sync</li>
+                        <li>Custom event creation and reminders</li>
+                        <li>Task prioritization and deadline tracking</li>
+                        <li>Shared calendars for group projects</li>
+                        <li>Campus event recommendations based on your interests</li>
+                    </ul>
+                    <p>With CampusConnect Calendar & Tasks, you'll always stay on top of your busy college life!</p>
+                `
+            },
+            academics: {
+                title: "Academic Life",
+                description: "Boost your academic performance with our all-in-one learning hub. Access course materials, track your study schedules, and monitor your progress. Our smart learning algorithms adapt to your study patterns, providing personalized recommendations to enhance your learning experience.",
+                content: `
+                    <h3>Academic Tools:</h3>
+                    <ul>
+                        <li>Digital course material repository</li>
+                        <li>Interactive study planner</li>
+                        <li>Progress tracking and analytics</li>
+                        <li>AI-powered study recommendations</li>
+                        <li>Collaborative study group formation</li>
+                    </ul>
+                    <p>Elevate your academic journey with CampusConnect's comprehensive academic support system!</p>
+                `
+            },
+            clubs: {
+                title: "Clubs & Societies",
+                description: "Discover and connect with like-minded individuals through our clubs and societies feature. Answer a quick survey about your interests, and we'll match you with relevant groups on campus. Join discussions, attend events, and broaden your horizons beyond the classroom.",
+                content: `
+                    <h3>Explore Campus Life:</h3>
+                    <ul>
+                        <li>Personalized club recommendations</li>
+                        <li>Event calendar for all campus activities</li>
+                        <li>Discussion forums for each club</li>
+                        <li>Easy club membership management</li>
+                        <li>Showcase your extracurricular achievements</li>
+                    </ul>
+                    <p>Immerse yourself in campus culture and make lifelong connections with CampusConnect Clubs & Societies!</p>
+                `
+            },
+            mentorship: {
+                title: "Guidance & Mentorship",
+                description: "Get the support you need to thrive in college. Connect with professors and experienced seniors for academic advice, career guidance, and personal development. Schedule one-on-one meetings, join group mentoring sessions, and build valuable relationships that will last beyond your college years.",
+                content: `
+                    <h3>Mentorship Opportunities:</h3>
+                    <ul>
+                        <li>Professor office hours booking system</li>
+                        <li>Peer mentoring program</li>
+                        <li>Career guidance workshops</li>
+                        <li>Alumni networking events</li>
+                        <li>Skill development webinars</li>
+                    </ul>
+                    <p>Navigate your college journey with confidence using CampusConnect's Guidance & Mentorship program!</p>
+                `
+            },
+            mentalhealth: {
+                title: "Mental Healthcare",
+                description: "Prioritize your mental well-being with our comprehensive mental health support system. Access guided meditation sessions, stress management techniques, and goal-setting tools. Our app helps you maintain a healthy work-life balance and provides resources for seeking professional help when needed.",
+                content: `
+                    <h3>Well-being Resources:</h3>
+                    <ul>
+                        <li>Daily mood tracking and journaling</li>
+                        <li>Guided meditation and mindfulness exercises</li>
+                        <li>Stress relief techniques and tips</li>
+                        <li>Anonymous peer support groups</li>
+                        <li>Direct link to campus counseling services</li>
+                    </ul>
+                    <p>Take care of your mental health and thrive with CampusConnect's supportive resources!</p>
+                `
+            },
+            chatbot: {
+                title: "CampusBot",
+                description: "Meet CampusBot, your 24/7 personal assistant for all things college-related. Ask questions about campus services, get quick answers to academic queries, and receive personalized recommendations. CampusBot learns from user interactions to continuously improve and provide the most relevant information to students.",
+                content: `
+                    <h3>CampusBot Capabilities:</h3>
+                    <ul>
+                        <li>Instant answers to FAQs about campus life</li>
+                        <li>Personalized schedule and deadline reminders</li>
+                        <li>Course selection and registration assistance</li>
+                        <li>Campus navigation and service locator</li>
+                        <li>Study tips and resource recommendations</li>
+                    </ul>
+                    <p>Let CampusBot be your guide to a smoother, more enjoyable college experience!</p>
+                `
+            }
+        };
+
+        let currentFeature = '';
+
+        function openModal(feature) {
+            currentFeature = feature;
+            const modal = document.getElementById("featureModal");
+            const title = document.getElementById("modalTitle");
+            const description = document.getElementById("modalDescription");
+            const featureContent = document.getElementById("featureContent");
+
+            title.textContent = featureDetails[feature].title;
+            description.textContent = featureDetails[feature].description;
+            featureContent.innerHTML = '';
+
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("featureModal").style.display = "none";
+        }
+
+        function exploreMore() {
+            const featureContent = document.getElementById("featureContent");
+            featureContent.innerHTML = featureDetails[currentFeature].content;
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("featureModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
